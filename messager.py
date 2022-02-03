@@ -2,33 +2,55 @@ import os
 import socket
 import sys
 
-def get_ip_address():
+def get_ip_address(empfang):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
+    s.connect((empfang, 80))
     return s.getsockname()[0]
-ip = get_ip_address()
 
-print("IP: " + ip)
-varName = r"C:\Users\super\fabiokaelin\lehre\Cleo-Messager\files\text.txt"
-var = "Ich bin fabio"
-host = ip
-end = "#END#"
-port = 9898
-buffer = 1024
 
-if end in var:
-    print("Das isch ä Wornig: #end# isch im Dateiname ErRRORRRRRRRRRR")
-    exit(-1)
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
+altEmpfang = local_ip
+print("Eigene IP: " + local_ip)
 
-s = socket.socket()
-s.connect((host, port))
 
-while True:
-    var_bytes = var[:buffer]
-    var = var[buffer:]
-    if var_bytes == "":
-        s.sendall(bytes(end, 'UTF-8'))
-        break
-    s.sendall(bytes(var_bytes, 'UTF-8'))
-    print(var_bytes)
-s.close()
+try:
+    while True:
+
+        empfang = input("Empfänger: ")
+        if empfang == "":
+            empfang = altEmpfang
+        elif empfang == "ende":
+            var = "ende"
+        else:
+            altEmpfang = empfang
+            var = input("Nachricht: ")
+
+        if var != "":
+            host = get_ip_address(empfang)
+            end = "#END#"
+            port = 9898
+            buffer = 1024
+
+            if end in var:
+                print("Das isch ä Wornig: #end# isch im Dateiname ErRRORRRRRRRRRR")
+                exit(-1)
+
+            s = socket.socket()
+            s.connect((host, port))
+
+            while True:
+                var_bytes = var[:buffer]
+                var = var[buffer:]
+                if var_bytes == "":
+                    s.sendall(bytes(end, 'UTF-8'))
+                    break
+                s.sendall(bytes(var_bytes, 'UTF-8'))
+            s.close()
+            print("")
+            if var == "ende":
+                exit(-1)
+        else:
+            print("Bitte eine Nachricht")
+except:
+    print("Ende")
