@@ -18,6 +18,7 @@ sep = "#SEP#"
 end = "#END#"
 port = 9898
 buffer = 1024
+ende = False
 
 
 
@@ -34,12 +35,14 @@ try:
         elif empfang == "ende":
             empfang = local_ip
             var = "ende"
+            ende = True
         else:
             altEmpfang = empfang
             var = input("Nachricht: ")
 
         if var != "":
-            host = get_ip_address(empfang)
+            # host = get_ip_address(empfang)
+            host = empfang
             if end in var:
                 print("Die Nachricht darf nicht #END# enthalten")
                 exit(-1)
@@ -62,8 +65,8 @@ try:
                 s.sendall(bytes(var_bytes, 'UTF-8'))
             s.close()
             print("")
-            if var == "ende":
-                exit(-1)
+            if ende:
+                exit()
         else:
             print("Eine Nachricht wird benötigt")
 except:
