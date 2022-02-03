@@ -2,6 +2,7 @@ import socket
 import os
 
 end = "#END#"
+sep = "#SEP#"
 port = 9898
 buffer = 1024
 
@@ -18,20 +19,22 @@ while True:
     message = ""
     while True:
         text = client_socket.recv(buffer).decode()
+        message += text
         if  end in text:
-            message += text
             break
-        print(message)
     message = message.replace(end, "")
-
-    if address[0] == local_ip and message == "ende":
-        exit(-1)
-    print(str(address[0]) + ": " + str(message))
+    messagesplit = message.split(sep)
 
     client_socket.close()
-    s.close()
+    s.close
+
+    if address[0] == local_ip and messagesplit[1] == "ende":
+        break
+
+    print(messagesplit[0] + ": " + messagesplit[1])
     del s
     del client_socket
+    del address
 # except:
 #     print("")
 #     print("Ende")
