@@ -20,7 +20,7 @@ try:
         empfang = input("Empfänger: ")
         if empfang == "":
             empfang = altEmpfang
-            print(empfang)
+            # print(empfang)
 
             altEmpfang = empfang
             var = input("Nachricht: ")
