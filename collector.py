@@ -6,38 +6,33 @@ end = "#END#"
 port = 9898
 buffer = 1024
 
-s = socket.socket()
-s.bind((host, port))
-s.listen(5)
-print("Server open...")
+hostname = socket.gethostname()
+local_ip = socket.gethostbyname(hostname)
 
-client_socket, address = s.accept()
-print("IP: " + str(address))
-# file, file_size = client_socket.recv(buffer).decode().split(sep)
-# print(file + " ___" + file_size)
+try:
+    while True:
+        s = socket.socket()
+        s.bind((host, port))
+        s.listen()
 
-message = ""
+        client_socket, address = s.accept()
+        message = ""
+        while True:
+            text = client_socket.recv(buffer).decode()
+            if  end in text:
+                message += text
+                break
+            print(message)
+        message = message.replace(end, "")
 
-# text = client_socket.recv(buffer).decode()
-# print(text)
+        if address[0] == local_ip and message == "ende":
+            exit(-1)
+        print(str(address[0]) + ": " + str(message))
 
-while True:
-    text = client_socket.recv(buffer).decode()
-    if  end in text:
-        message += text
-        break
-    print(message)
-message = message.replace(end, "")
-print(message)
-
-# file_name = os.path.basename(file)
-# file_size = int(file_size)
-# with open(file_name, "wb") as f:
-#     bytes_recv = client_socket.recv(buffer)
-#     while bytes_recv:
-#         f.write(bytes_recv)
-#         # print(len(bytes_recv))
-#         bytes_recv = client_socket.recv(buffer)
-
-client_socket.close()
-s.close()
+        client_socket.close()
+        s.close()
+        del s
+        del client_socket
+except:
+    print("")
+    print("Ende")
