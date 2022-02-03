@@ -20,6 +20,10 @@ try:
         empfang = input("Empfänger: ")
         if empfang == "":
             empfang = altEmpfang
+            print(empfang)
+
+            altEmpfang = empfang
+            var = input("Nachricht: ")
         elif empfang == "ende":
             var = "ende"
         else:
