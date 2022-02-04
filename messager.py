@@ -5,6 +5,7 @@ import sys
 def get_ip_address(empfang):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect((empfang, 80))
+    # print(s)
     return s.getsockname()[0]
 
 
@@ -18,31 +19,31 @@ sep = "#SEP#"
 end = "#END#"
 port = 9898
 buffer = 1024
-ende = False
+notende = True
 
 
 
 try:
-    while True:
+    while notende:
 
         empfang = input("Empfänger: ")
         if empfang == "":
             empfang = altEmpfang
             # print(empfang)
-
-            altEmpfang = empfang
             var = input("Nachricht: ")
         elif empfang == "ende":
             empfang = local_ip
             var = "ende"
-            ende = True
+            notende = False
         else:
             altEmpfang = empfang
             var = input("Nachricht: ")
 
         if var != "":
-            # host = get_ip_address(empfang)
+            host = get_ip_address(empfang)
+            # print(host)
             host = empfang
+            # print(host)
             if end in var:
                 print("Die Nachricht darf nicht #END# enthalten")
                 exit(-1)
@@ -65,8 +66,6 @@ try:
                 s.sendall(bytes(var_bytes, 'UTF-8'))
             s.close()
             print("")
-            if ende:
-                exit()
         else:
             print("Eine Nachricht wird benötigt")
 except:
