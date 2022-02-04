@@ -48,11 +48,13 @@ try:
                 print("Die Nachricht darf nicht #END# enthalten")
                 exit(-1)
             if sep in var:
+                #172.20.107.85
                 print("Die Nachricht darf nicht #sep# enthalten")
                 exit(-1)
 
             s = socket.socket()
             s.connect((host, port))
+            # print(host)
             s.send(bytes(name, 'UTF-8'))
 
             s.send(bytes(sep, 'UTF-8'))
