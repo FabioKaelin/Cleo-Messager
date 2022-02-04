@@ -44,7 +44,7 @@ try:
             break
 
         print(messagesplit[0] + ": " + messagesplit[1])
-        print(address[0])
+        # print(address[0])
         del s
         del client_socket
         del address

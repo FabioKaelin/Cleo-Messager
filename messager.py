@@ -14,6 +14,7 @@ local_ip = socket.gethostbyname(hostname)
 altEmpfang = local_ip
 print("Eigene IP: " + local_ip)
 name = input("Name: ")
+print("")
 
 sep = "#SEP#"
 end = "#END#"
