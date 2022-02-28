@@ -3,6 +3,7 @@ import os
 
 end = "#END#"
 sep = "#SEP#"
+exitTag = "#EXIT#"
 nameTag = "#NAME#"
 messageTag = "#MES#"
 port = 9898
@@ -37,6 +38,8 @@ while True:
         if  end in text:
             break
     message = message.replace(end, "")
+    if address[0] == local_ip and exitTag in message:
+            break
     if (messageTag in message):
         message = message.replace(messageTag, "")
         messagesplit = message.split(sep)
@@ -44,8 +47,7 @@ while True:
         client_socket.close()
         sserver.close
 
-        if address[0] == local_ip and messagesplit[1] == "ende":
-            break
+
 
         print(messagesplit[0] + ": " + messagesplit[1])
     elif (nameTag in message):

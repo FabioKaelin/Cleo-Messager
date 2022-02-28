@@ -21,6 +21,7 @@ print("")
 
 sep = "#SEP#"
 end = "#END#"
+exitTag = "#EXIT#"
 nameTag = "#NAME#"
 messageTag = "#MES#"
 port = 9898
@@ -32,10 +33,10 @@ for x in range(2, 255):
         ip = local_ip
         ip = ip.split(".")
         empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-        print(empfang1)
+        # print(empfang1)
         host = get_ip_address(empfang1)
         s = socket.socket()
-        s.settimeout(0.1)
+        s.settimeout(0.001)
         s.connect((empfang1, port))
         # print(host)
         s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
@@ -55,7 +56,7 @@ while notende:
         var = input("Nachricht: ")
     elif empfang == "ende":
         empfang = local_ip
-        var = "ende"
+        var = exitTag
         notende = False
     else:
         altEmpfang = empfang
