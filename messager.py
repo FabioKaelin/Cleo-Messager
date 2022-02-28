@@ -8,9 +8,12 @@ def get_ip_address(empfang):
     # print(s)
     return s.getsockname()[0]
 
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-hostname = socket.gethostname()
-local_ip = socket.gethostbyname(hostname)
+s.connect(("8.8.8.8", 80))
+local_ip = s.getsockname()[0]
+
+del s
 altEmpfang = local_ip
 print("Eigene IP: " + local_ip)
 name = input("Name: ")
