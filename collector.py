@@ -114,13 +114,16 @@ def server():
             if (address[0] == local_ip):
                 global name
                 name = message
+                print("Lokale IP")
 
                 z = threading.Thread(target=sayIP9899)
                 z.start()
                 z2 = threading.Thread(target=sayIP9898)
                 z2.start()
             else:
+                print("Andere IP")
                 if(name != "unbekannt"):
+                    print("name ist nicht unbekannt")
                     y9899 = threading.Thread(target=answerName, args=(address[0],9899,))
                     y9899.start()
                     y9898 = threading.Thread(target=answerName, args=(address[0],9898,))
