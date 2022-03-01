@@ -28,7 +28,7 @@ def sayIP9898():
             if (empfang1 != local_ip):
                 # print(empfang1)
                 s = socket.socket()
-                s.settimeout(0.01)
+                s.settimeout(0.03)
                 s.connect((empfang1, 9898))
                 s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
                 s.close()
@@ -44,7 +44,7 @@ def sayIP9899():
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
             # print(empfang1)
             s = socket.socket()
-            s.settimeout(0.01)
+            s.settimeout(0.03)
             s.connect((empfang1, 9899))
             s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
             s.close()
@@ -114,16 +114,16 @@ def server():
             if (address[0] == local_ip):
                 global name
                 name = message
-                print("Lokale IP")
+                # print("Lokale IP")
 
                 z = threading.Thread(target=sayIP9899)
                 z.start()
                 z2 = threading.Thread(target=sayIP9898)
                 z2.start()
             else:
-                print("Andere IP")
+                # print("Andere IP")
                 if(name != "unbekannt"):
-                    print("name ist nicht unbekannt")
+                    # print("name ist nicht unbekannt")
                     y9899 = threading.Thread(target=answerName, args=(address[0],9899,))
                     y9899.start()
                     y9898 = threading.Thread(target=answerName, args=(address[0],9898,))

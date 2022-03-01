@@ -63,6 +63,7 @@ def NameListener():
         if (exitTag in message):
             if (address[0] == local_ip):
                 # exit()
+                print("Beenden")
                 NameListenerloop = False
 
 
