@@ -4,14 +4,34 @@ import threading
 import time
 
 
-def server():
+end = "#END#"
+sep = "#SEP#"
+exitTag = "#EXIT#"
+nameTag = "#NAME#"
+nameAnswerTag = "#NAMEANSWER#"
+messageTag = "#MES#"
+logoutTag = "#LOGOUT#"
+name = "unbekannt"
 
-    end = "#END#"
-    sep = "#SEP#"
-    exitTag = "#EXIT#"
-    nameTag = "#NAME#"
-    messageTag = "#MES#"
-    logoutTag = "#LOGOUT#"
+def get_ip_address(empfang):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect((empfang, 80))
+    return s.getsockname()[0]
+
+def answerName(empfang1, port):
+        try:
+            host = get_ip_address(empfang1)
+            s = socket.socket()
+            s.settimeout(0.001)
+            s.connect((host, port))
+            s.send(bytes(nameAnswerTag + sep + name + end, 'UTF-8'))
+            s.close()
+        except:
+            x = "a"
+
+
+
+def server():
     port = 9898
     buffer = 1024
 
@@ -46,7 +66,7 @@ def server():
                 message = message.replace(sep, "")
                 message = message.replace(nameTag, "")
                 message = message.replace(messageTag, "")
-                print(message + " ist ausgeloggt ")
+                print(message + " ist ausgeloggt und das Programm wird beendet")
                 exit()
         if (logoutTag in message):
             message = message.replace(exitTag, "")
@@ -68,6 +88,19 @@ def server():
         elif (nameTag in message):
             message = message.replace(sep, "")
             message = message.replace(nameTag, "")
+            if (address[0] == local_ip):
+                global name
+                name = message
+            else:
+                y9899 = threading.Thread(target=answerName, args=(address[0],9899,))
+                y9899.start()
+                y9898 = threading.Thread(target=answerName, args=(address[0],9898,))
+                y9898.start()
+
+            print(address[0] + " ist " + message)
+        elif (nameAnswerTag in message):
+            message = message.replace(sep, "")
+            message = message.replace(nameAnswerTag, "")
             print(address[0] + " ist " + message)
 
         del sserver
@@ -80,3 +113,7 @@ def server():
 
 x = threading.Thread(target=server)
 x.start()
+
+
+# while True:
+#     input("")
