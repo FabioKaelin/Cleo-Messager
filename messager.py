@@ -145,40 +145,20 @@ def exit9898():
         x = "a"
 
 def sayIP9898():
-    for x in range(2, 255):
-        try:
-            ip = local_ip
-            ip = ip.split(".")
-            empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            host = get_ip_address(empfang1)
-            s = socket.socket()
-            s.settimeout(0.001)
-            s.connect((empfang1, port))
-            s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
-            s.close()
-        except:
-            x = "a"
+    try:
+        host = get_ip_address(local_ip)
+        s = socket.socket()
+        s.settimeout(0.001)
+        s.connect((host, 9898))
+        s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
+        s.close()
+    except:
+        x = "a"
 
-def sayIP9899():
-    for x in range(2, 255):
-        try:
-            ip = local_ip
-            ip = ip.split(".")
-            empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            host = get_ip_address(empfang1)
-            s = socket.socket()
-            s.settimeout(0.001)
-            s.connect((empfang1, 9899))
-            s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
-            s.close()
-        except:
-            x = "a"
 
 
 x = threading.Thread(target=sayIP9898)
 x.start()
-z = threading.Thread(target=sayIP9899)
-z.start()
 y = threading.Thread(target=NameListener)
 y.start()
 
@@ -240,6 +220,9 @@ while notende:
             notSkip = False
         if nameTag in var:
             print("Die Nachricht darf nicht #NAME# enthalten")
+            notSkip = False
+        if nameAnswerTag in var:
+            print("Die Nachricht darf nicht #NAMEANSWER# enthalten")
             notSkip = False
         if messageTag in var:
             print("Die Nachricht darf nicht #MES# enthalten")

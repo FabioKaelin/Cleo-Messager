@@ -18,6 +18,39 @@ def get_ip_address(empfang):
     s.connect((empfang, 80))
     return s.getsockname()[0]
 
+
+def sayIP9898():
+    for x in range(2, 255):
+        try:
+            ip = local_ip
+            ip = ip.split(".")
+            empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
+            host = get_ip_address(empfang1)
+            if (host != local_ip):
+                s = socket.socket()
+                s.settimeout(0.001)
+                s.connect((host, 9898))
+                s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
+                s.close()
+        except:
+            x = "a"
+
+def sayIP9899():
+    for x in range(2, 255):
+        try:
+            ip = local_ip
+            ip = ip.split(".")
+            empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
+            host = get_ip_address(empfang1)
+            s = socket.socket()
+            s.settimeout(0.001)
+            s.connect((empfang1, 9899))
+            s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
+            s.close()
+        except:
+            x = "a"
+
+
 def answerName(empfang1, port):
         try:
             host = get_ip_address(empfang1)
@@ -34,15 +67,6 @@ def answerName(empfang1, port):
 def server():
     port = 9898
     buffer = 1024
-
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    local_ip = s.getsockname()[0]
-    print("Eigene IP: " + local_ip)
-
-    del s
-
     # try:
     while True:
         sserver = socket.socket()
@@ -78,7 +102,6 @@ def server():
         if (messageTag in message):
             message = message.replace(messageTag, "")
             messagesplit = message.split(sep)
-
             client_socket.close()
             sserver.close
 
@@ -91,6 +114,11 @@ def server():
             if (address[0] == local_ip):
                 global name
                 name = message
+
+                z = threading.Thread(target=sayIP9899)
+                z.start()
+                z2 = threading.Thread(target=sayIP9898)
+                z2.start()
             else:
                 y9899 = threading.Thread(target=answerName, args=(address[0],9899,))
                 y9899.start()
@@ -110,6 +138,13 @@ def server():
     #     print("")
     #     print("Ende")
 
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+local_ip = s.getsockname()[0]
+print("Eigene IP: " + local_ip)
+
+del s
 
 x = threading.Thread(target=server)
 x.start()
