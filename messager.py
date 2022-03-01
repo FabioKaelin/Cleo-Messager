@@ -49,6 +49,12 @@ def NameListener():
         if (nameTag in message):
             message = message.replace(sep, "")
             message = message.replace(nameTag, "")
+            print(address[0] + " ist " + message)
+            NameToIP.append([address[0], message])
+        if (nameAnswerTag in message):
+            message = message.replace(sep, "")
+            message = message.replace(nameAnswerTag, "")
+            print(address[0] + " ist " + message)
             NameToIP.append([address[0], message])
         if (logoutTag in message):
             message = message.replace(sep, "")

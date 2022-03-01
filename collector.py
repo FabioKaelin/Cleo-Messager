@@ -25,8 +25,6 @@ def sayIP9898():
             ip = local_ip
             ip = ip.split(".")
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            # host = get_ip_address(empfang1)
-            # print(empfang1)
             if (empfang1 != local_ip):
                 s = socket.socket()
                 s.settimeout(0.001)
@@ -42,7 +40,6 @@ def sayIP9899():
             ip = local_ip
             ip = ip.split(".")
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            # host = get_ip_address(empfang1)
             s = socket.socket()
             s.settimeout(0.001)
             s.connect((empfang1, 9899))
