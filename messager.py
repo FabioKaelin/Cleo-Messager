@@ -148,7 +148,7 @@ def sayIP9898():
     try:
         host = get_ip_address(local_ip)
         s = socket.socket()
-        s.settimeout(0.001)
+        # s.settimeout(0.001)
         s.connect((host, 9898))
         s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
         s.close()
