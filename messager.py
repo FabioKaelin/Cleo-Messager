@@ -1,4 +1,5 @@
 import os
+from pickle import FALSE
 import socket
 import sys
 import threading
@@ -30,17 +31,18 @@ def NameListener():
     s.connect(("8.8.8.8", 80))
     local_ip = s.getsockname()[0]
 
+    NameListenerloop = True
     del s
 
     # try:
-    while True:
+    while NameListenerloop:
         sserver = socket.socket()
         sserver.bind((local_ip, 9899))
         sserver.listen()
         client_socket, address = sserver.accept()
 
         message = ""
-        while True:
+        while NameListenerloop:
             text = client_socket.recv(buffer).decode()
             message += text
             if end in text:
@@ -49,12 +51,10 @@ def NameListener():
         if (nameTag in message):
             message = message.replace(sep, "")
             message = message.replace(nameTag, "")
-            print(address[0] + " ist " + message)
             NameToIP.append([address[0], message])
         if (nameAnswerTag in message):
             message = message.replace(sep, "")
             message = message.replace(nameAnswerTag, "")
-            print(address[0] + " ist " + message)
             NameToIP.append([address[0], message])
         if (logoutTag in message):
             message = message.replace(sep, "")
@@ -62,7 +62,9 @@ def NameListener():
             NameToIP.remove([address[0], message])
         if (exitTag in message):
             if (address[0] == local_ip):
-                exit()
+                # exit()
+                NameListenerloop = False
+
 
         del sserver
         del client_socket
@@ -104,7 +106,7 @@ def logoutIP9899():
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
             host = get_ip_address(empfang1)
             s = socket.socket()
-            s.settimeout(0.001)
+            s.settimeout(0.01)
             s.connect((empfang1, 9899))
             s.send(bytes(logoutTag + sep + name + end, 'UTF-8'))
             s.close()
@@ -119,7 +121,7 @@ def logoutIP9898():
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
             host = get_ip_address(empfang1)
             s = socket.socket()
-            s.settimeout(0.001)
+            s.settimeout(0.01)
             s.connect((empfang1, 9898))
             s.send(bytes(logoutTag + sep + name + end, 'UTF-8'))
             s.close()
@@ -131,7 +133,7 @@ def exit9899():
         ip = local_ip
         host = get_ip_address(ip)
         s = socket.socket()
-        s.settimeout(0.001)
+        s.settimeout(0.01)
         s.connect((host, 9899))
         s.send(bytes(exitTag + sep + name + end, 'UTF-8'))
         s.close()
@@ -143,7 +145,7 @@ def exit9898():
         ip = local_ip
         host = get_ip_address(ip)
         s = socket.socket()
-        s.settimeout(0.001)
+        s.settimeout(0.01)
         s.connect((host, 9898))
         s.send(bytes(exitTag + sep + name + end, 'UTF-8'))
         s.close()
@@ -177,19 +179,45 @@ while notende:
         empfang = altEmpfang
         var = input("Nachricht: ")
         if (var == "ende"):
-            logoutIP9899()
-            logoutIP9898()
-            exit9898()
-            a = threading.Thread(target=exit9899)
-            a.start()
-            notende = False
-            break
+            Threadlogout9898 = threading.Thread(target=logoutIP9898)
+            Threadlogout9899 = threading.Thread(target=logoutIP9899)
+            Threadexit9898 = threading.Thread(target=exit9898)
+            Threadexit9899 = threading.Thread(target=exit9899)
+
+            Threadlogout9899.start()
+            Threadlogout9898.start()
+            Threadexit9899.start()
+            Threadexit9898.start()
+
+            Threadlogout9899.join()
+            Threadlogout9898.join()
+            Threadexit9899.join()
+            Threadexit9898.join()
+            exit()
+            # logoutIP9899()
+            # logoutIP9898()
+            # exit9898()
+            # a = threading.Thread(target=exit9899)
+            # a.start()
+            # notende = False
+            # break
     elif empfang == "ende":
-        logoutIP9899()
-        logoutIP9898()
-        exit9898()
-        a = threading.Thread(target=exit9899)
-        a.start()
+        Threadlogout9898 = threading.Thread(target=logoutIP9898)
+        Threadlogout9899 = threading.Thread(target=logoutIP9899)
+        Threadexit9898 = threading.Thread(target=exit9898)
+        Threadexit9899 = threading.Thread(target=exit9899)
+
+        Threadlogout9899.start()
+        Threadlogout9898.start()
+        Threadexit9899.start()
+        Threadexit9898.start()
+
+        Threadlogout9899.join()
+        Threadlogout9898.join()
+        Threadexit9899.join()
+        Threadexit9898.join()
+        exit()
+
         notende = False
         break
     else:
