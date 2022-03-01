@@ -26,10 +26,11 @@ def sayIP9898():
             ip = ip.split(".")
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
             host = get_ip_address(empfang1)
+            # print(empfang1)
             if (host != local_ip):
                 s = socket.socket()
                 s.settimeout(0.001)
-                s.connect((host, 9898))
+                s.connect((empfang1, 9898))
                 s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
                 s.close()
         except:
@@ -56,7 +57,7 @@ def answerName(empfang1, port):
             host = get_ip_address(empfang1)
             s = socket.socket()
             s.settimeout(0.001)
-            s.connect((host, port))
+            s.connect((empfang1, port))
             s.send(bytes(nameAnswerTag + sep + name + end, 'UTF-8'))
             s.close()
         except:
