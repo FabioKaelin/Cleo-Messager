@@ -203,7 +203,7 @@ while notende:
             break
 
     if var != "":
-        host = get_ip_address(empfang)
+        # host = get_ip_address(empfang)
         host = empfang
         notSkip = True
         if end in var:
