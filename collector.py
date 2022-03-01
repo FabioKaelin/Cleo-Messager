@@ -25,7 +25,7 @@ def sayIP9898():
             ip = local_ip
             ip = ip.split(".")
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            host = get_ip_address(empfang1)
+            # host = get_ip_address(empfang1)
             # print(empfang1)
             if (empfang1 != local_ip):
                 s = socket.socket()
@@ -42,13 +42,12 @@ def sayIP9899():
             ip = local_ip
             ip = ip.split(".")
             empfang1 = str(ip[0]) + "." + str(ip[1]) + "." + str(ip[2]) + "." + str(x)
-            host = get_ip_address(empfang1)
-            if (empfang1 != local_ip):
-                s = socket.socket()
-                s.settimeout(0.001)
-                s.connect((empfang1, 9899))
-                s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
-                s.close()
+            # host = get_ip_address(empfang1)
+            s = socket.socket()
+            s.settimeout(0.001)
+            s.connect((empfang1, 9899))
+            s.send(bytes(nameTag + sep + name + end, 'UTF-8'))
+            s.close()
         except:
             x = "a"
 
@@ -105,10 +104,7 @@ def server():
             message = message.replace(messageTag, "")
             messagesplit = message.split(sep)
             client_socket.close()
-            sserver.close
-
-
-
+            sserver.close()
             print(messagesplit[0] + ": " + messagesplit[1])
         elif (nameTag in message):
             message = message.replace(sep, "")
