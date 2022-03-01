@@ -16,6 +16,7 @@ def get_ip_address(empfang):
 
 
 def NameListener():
+    global NameToIP
 
     end = "#END#"
     sep = "#SEP#"
@@ -51,7 +52,7 @@ def NameListener():
         if (logoutTag in message):
             message = message.replace(sep, "")
             message = message.replace(logoutTag, "")
-            NameToIP.pop([address[0], message])
+            NameToIP.remove([address[0], message])
         if (exitTag in message):
             if (address[0] == local_ip):
                 exit()
@@ -187,9 +188,11 @@ while notende:
         notende = False
         # break
     else:
+        empfang = ""
         for x in NameToIP:
             if (x[1] == empfang):
                 empfang = x[0]
+                continue
         altEmpfang = empfang
         var = input("Nachricht: ")
 
